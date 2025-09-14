@@ -1,0 +1,30 @@
+import pandas as pd 
+from sklearn.model_selection import train_test_split 
+from sklearn.preprocessing import StandardScaler 
+from sklearn.linear_model import LogisticRegression 
+data = pd.DataFrame({ 
+'Amount': [100, 250, 300, 50, 500, 450, 120, 80, 700, 60], 
+'TransactionTime': [5, 4, 8, 2, 20, 18, 7, 3, 22, 1], 
+'Age': [25, 45, 30, 22, 50, 40, 28, 24, 55, 20], 
+'Class': [0, 0, 1, 0, 1, 1, 0, 0, 1, 0]   # 0 = No Fraud, 1 = Fraud }) 
+X = data.drop('Class', axis=1) 
+y = data['Class'] 
+X_train, X_test, y_train, y_test = train_test_split( 
+X, y, test_size=0.3, random_state=42, stratify=y 
+) 
+scaler = StandardScaler() 
+X_train = scaler.fit_transform(X_train) 
+X_test = scaler.transform(X_test) 
+model = LogisticRegression(max_iter=1000) 
+model.fit(X_train, y_train) 
+amount = float(input("Enter Transaction Amount: ")) 
+time = float(input("Enter Transaction Time (0–24 hrs): ")) 
+age = int(input("Enter Customer Age: ")) 
+user_data = pd.DataFrame([[amount, time, age]], columns=['Amount', 'TransactionTime', 
+'Age']) 
+user_data_scaled = scaler.transform(user_data) 
+prediction = model.predict(user_data_scaled)[0] 
+if prediction == 1: 
+print("Result: Yes (Fraud)") 
+else: 
+print("Result: No (Not Fraud)"
