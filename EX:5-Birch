@@ -1,0 +1,21 @@
+import pandas as pd 
+import numpy as np 
+import matplotlib.pyplot as plt 
+from sklearn.cluster import Birch 
+data = pd.read_csv("temperature_data.csv") 
+df = pd.DataFrame(data) 
+X = df[["temperature", "humidity"]] 
+birch = Birch(n_clusters=3) 
+birch.fit(X) 
+df["cluster"] = birch.predict(X) 
+print("Clustered Data:\n", df) 
+new_point = np.array([[28, 55]]) 
+new_cluster = birch.predict(new_point) 
+print("\nNew point belongs to cluster:", new_cluster[0]) 
+plt.scatter(df["temperature"], df["humidity"],c=df["cluster"], cmap="viridis") 
+plt.scatter(new_point[0,0], new_point[0,1], c="red", marker="*",label="New Point") 
+plt.title("BIRCH Clustering (Temperature vs Humidity)") 
+plt.xlabel("Temperature (°C)") 
+plt.ylabel("Humidity (%)") 
+plt.legend() 
+plt.show()
