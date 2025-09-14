@@ -1,0 +1,25 @@
+# Data Preprocessing Example
+import pandas as pd
+from sklearn.impute import SimpleImputer
+
+# a) Loading the dataset
+data = {
+    'Age': [25, 30, 35, None, 40],
+    'Salary': [50000, 60000, None, 80000, 90000],
+    'Purchased': ['No', 'Yes', 'No', 'Yes', 'No']
+}
+df = pd.DataFrame(data)
+print("Original Dataset:\n", df)
+
+# b) Identifying the dependent and independent variables
+X = df[['Age', 'Salary']]   # Independent variables
+y = df['Purchased']         # Dependent variable
+
+print("\nIndependent Variables (X):\n", X)
+print("\nDependent Variable (y):\n", y)
+
+# c) Dealing with missing data (fill missing values with mean)
+imputer = SimpleImputer(strategy='mean')
+X = pd.DataFrame(imputer.fit_transform(X), columns=X.columns)
+
+print("\nAfter Handling Missing Data:\n", X)
