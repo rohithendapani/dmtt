@@ -1,0 +1,43 @@
+# Data Preprocessing Example (Categorical, Scaling, Splitting)
+import pandas as pd
+from sklearn.preprocessing import LabelEncoder, StandardScaler
+from sklearn.model_selection import train_test_split
+
+# Sample dataset
+data = {
+    'Country': ['France', 'Spain', 'Germany', 'Spain', 'Germany'],
+    'Age': [44, 27, 30, 38, 40],
+    'Salary': [72000, 48000, 54000, 61000, 67000],
+    'Purchased': ['No', 'Yes', 'No', 'No', 'Yes']
+}
+df = pd.DataFrame(data)
+print("Original Dataset:\n", df)
+
+# a) Dealing with categorical data (Encoding 'Country' and 'Purchased')
+labelencoder_X = LabelEncoder()
+df['Country'] = labelencoder_X.fit_transform(df['Country'])
+
+labelencoder_y = LabelEncoder()
+df['Purchased'] = labelencoder_y.fit_transform(df['Purchased'])
+
+print("\nAfter Encoding Categorical Data:\n", df)
+
+# Independent variables (features) and dependent variable (target)
+X = df[['Country', 'Age', 'Salary']]
+y = df['Purchased']
+
+# b) Scaling the features
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+print("\nScaled Features (X):\n", X_scaled)
+
+# c) Splitting dataset into Training and Testing Sets
+X_train, X_test, y_train, y_test = train_test_split(
+    X_scaled, y, test_size=0.2, random_state=42
+)
+
+print("\nTraining Features (X_train):\n", X_train)
+print("\nTesting Features (X_test):\n", X_test)
+print("\nTraining Labels (y_train):\n", y_train.values)
+print("\nTesting Labels (y_test):\n", y_test.values)
