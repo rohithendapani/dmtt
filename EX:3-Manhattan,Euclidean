@@ -1,0 +1,22 @@
+import pandas as pd 
+from scipy.stats import pearsonr 
+df = pd.read_csv("C:/Users/1MSCCS15/Desktop/study_hr-marks.csv").dropna() 
+var1 = df['Marks'] 
+var2 = df['Hours'] 
+correlation, p_value = pearsonr(var1, var2) 
+print(f'Pearson Correlation {round(correlation,3)}') 
+if correlation >= 0.5: 
+print("The relationship between two variables are strongly related: Positive Correlation") 
+elif correlation < 0.5: 
+print("The relationship between two variables are not strongly related: Negative Correlation") 
+else: 
+print("No correlation") 
+# The distance measures 
+import numpy as np 
+import matplotlib.pyplot as plt 
+p1 = np.array([2, 3]) 
+p2 = np.array([7, 8]) 
+euclidean = np.sqrt(np.sum((p2 - p1)**2)) 
+manhattan = np.sum(np.abs(p2 - p1)) 
+print(f"Euclidean Distance: {round(euclidean,3)}") 
+print(f"Manhattan Distance: {manhattan}")
