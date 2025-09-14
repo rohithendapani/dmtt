@@ -1,0 +1,20 @@
+if (!require(mlbench)) install.packages("mlbench") 
+if (!require(ggplot2)) install.packages("ggplot2")  
+library(mlbench) 
+library(ggplot2)  
+data("BreastCancer", package = "mlbench") 
+df <- BreastCancer 
+df <- na.omit(df) 
+df$Class <- ifelse(df$Class == "malignant", 1, 0) 
+df$Cl.thickness <- as.numeric(as.character(df$Cl.thickness)) 
+df$Cell.size <- as.numeric(as.character(df$Cell.size)) 
+log_model <- glm(Class ~ Cl.thickness + Cell.size, data = df, family = binomial) 
+df$predicted_probs <- predict(log_model, type = "response") 
+ggplot(df, aes(x = Cl.thickness, y = predicted_probs)) + 
+geom_point(aes(color = factor(Class)), size = 2, alpha = 0.7) + 
+geom_smooth(method = "glm", method.args = list(family = "binomial"), se = FALSE, color 
+= "blue") + 
+labs(x = "Clumping Thickness", y = "Predicted Probability of Malignant", color = "Actual 
+Diagnosis") + 
+ggtitle("Logistic Regression: Malignancy Probability vs. Clumping Thickness") + 
+theme_minimal()
