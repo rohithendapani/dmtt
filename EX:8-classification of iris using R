@@ -1,0 +1,21 @@
+library(e1071) 
+library(caret) 
+data(iris) 
+set.seed(42) 
+train_index <- createDataPartition(iris$Species, p = 0.7, list = FALSE) 
+train_data <- iris[train_index, ] 
+test_data <- iris[-train_index, ] 
+svm_model <- svm(Species ~ ., data = train_data, kernel = "linear") 
+predictions <- predict(svm_model, newdata = test_data) 
+conf_matrix <- confusionMatrix(predictions, test_data$Species) 
+accuracy <- conf_matrix$overall['Accuracy'] 
+precision <- conf_matrix$byClass[, 'Pos Pred Value'] 
+recall <- conf_matrix$byClass[, 'Sensitivity'] 
+f_measure <- conf_matrix$byClass[, 'F1'] 
+print(paste("Accuracy:", accuracy)) 
+print("Precision (per class):") 
+print(precision) 
+print("Recall (per class):") 
+print(recall) 
+print("F1-Measure (per class):") 
+print(f_measure)
