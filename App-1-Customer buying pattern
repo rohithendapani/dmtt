@@ -1,0 +1,24 @@
+import pandas as pd 
+from sklearn.model_selection import train_test_split 
+from sklearn.tree import DecisionTreeClassifier 
+from sklearn.metrics import classification_report, accuracy_score 
+# Sample customer data 
+data = { 
+'Age': [25, 45, 23, 36, 52, 40, 28, 48], 
+'AnnualIncome': [25, 70, 30, 60, 80, 50, 40, 65], 
+'Purchased': ['No', 'Yes', 'No', 'Yes', 'Yes', 'No', 'No', 'Yes']  # Target variable 
+} 
+df = pd.DataFrame(data) 
+# Features (X) and Target (y) 
+X = df[['Age', 'AnnualIncome']] 
+y = df['Purchased'] 
+# Split data into training and testing sets 
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42) 
+# Create Decision Tree model 
+model = DecisionTreeClassifier() 
+model.fit(X_train, y_train) 
+# Predictions 
+y_pred = model.predict(X_test) 
+# Results 
+print("Accuracy:", accuracy_score(y_test, y_pred)) 
+print("\nClassification Report:\n", classification_report(y_test, y_pred))
