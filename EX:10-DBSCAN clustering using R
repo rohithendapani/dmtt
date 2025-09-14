@@ -1,0 +1,25 @@
+install.packages(c("dbscan", "ggplot2", "factoextra")) 
+library(dbscan) 
+library(ggplot2) 
+library(factoextra) 
+data(iris) 
+X <- scale(iris[, 1:4]) 
+set.seed(1) 
+db <- dbscan(X, eps = 0.6, minPts = 5) 
+cat("Cluster counts (0 = noise):\n") 
+print(table(db$cluster)) 
+pc <- prcomp(X)$x[, 1:2] 
+df <- data.frame( 
+PC1 = pc[, 1], 
+PC2 = pc[, 2], 
+cluster = factor(ifelse(db$cluster == 0, "noise", db$cluster)) 
+) 
+ggplot(df, aes(PC1, PC2, color = cluster)) + 
+geom_point(size = 2) + 
+labs( 
+title = "DBSCAN on iris (PCA view)", 
+x = "PC1", 
+y = "PC2", 
+color = "Cluster" 
+) + 
+theme_minimal()
